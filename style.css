@@ -1,0 +1,112 @@
+:root {
+    --dark-bg: #121212;
+    --darker-bg: #0a0a0a;
+    --dark-card: #1e1e1e;
+    --dark-border: #333;
+    --dark-text: #e0e0e0;
+    --dark-input: #2d2d2d;
+    --primary-accent: #6c5ce7;
+}
+
+body.dark-theme {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+.dark-card {
+    background-color: var(--dark-card);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+.dark-input {
+    background-color: var(--dark-input);
+    border-color: var(--dark-border);
+    color: var(--dark-text);
+}
+
+.dark-input:focus {
+    background-color: var(--dark-input);
+    border-color: var(--primary-accent);
+    color: var(--dark-text);
+}
+
+.navbar-dark {
+    background-color: var(--darker-bg) !important;
+}
+
+.transaction-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.transaction-item {
+    padding: 10px;
+    border-bottom: 1px solid var(--dark-border);
+    margin-bottom: 8px;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.tx-hash {
+    color: var(--primary-accent);
+    font-family: monospace;
+}
+
+.tx-time {
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+/* Wheel styling */
+.wheel-container {
+    position: relative;
+    margin: 0 auto;
+    width: 250px;
+    height: 250px;
+}
+
+.wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    border: 8px solid var(--dark-border);
+    box-shadow: 0 0 0 8px var(--primary-accent), 0 0 15px 5px rgba(0, 0, 0, 0.6);
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+}
+
+.wheel-segment {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    transform-origin: bottom right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-card);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-accent);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5a4bcf;
+}

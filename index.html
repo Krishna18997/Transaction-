@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptex - Crypto Transaction Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+</head>
+<body class="dark-theme">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="Cryptex" height="30" class="d-inline-block align-top">
+                Cryptex
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Transactions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Spin Wheel</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button id="connectWallet" class="btn btn-outline-light me-2">Connect MetaMask</button>
+                    <div id="walletAddress" class="text-light align-self-center d-none"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <div class="card dark-card mb-4">
+                    <div class="card-header">
+                        <h5>Transaction Dashboard</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="card dark-card">
+                                    <div class="card-body">
+                                        <h6>AI Fee Prediction</h6>
+                                        <canvas id="feeChart" height="200"></canvas>
+                                        <div class="mt-2" id="feePrediction">
+                                            <span class="badge bg-info">Current Fee: Medium</span>
+                                            <span class="badge bg-success ms-2">Predicted: Lower in 5 min</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card dark-card">
+                                    <div class="card-body text-center">
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card dark-card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5>New Transaction</h5>
+                                <div id="transactionTimer" class="text-muted">Last tx: 5m 23s ago</div>
+                            </div>
+                            <div class="card-body">
+                                <form id="transactionForm">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Recipient Address</label>
+                                            <input type="text" class="form-control dark-input" placeholder="0x..." required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Amount</label>
+                                            <div class="input-group">
+                                                <input type="number" class="form-control dark-input" placeholder="0.00" required>
+                                                <select class="form-select dark-input">
+                                                    <option>ETH</option>
+                                                    <option>BTC</option>
+                                                    <option>USDT</option>
+                                                    <option>USDC</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Transaction Fee</label>
+                                        <div class="d-flex align-items-center">
+                                            <input type="range" class="form-range me-3" min="1" max="3" value="2" id="feeRange">
+                                            <span id="feeLevel" class="badge bg-warning">Medium</span>
+                                        </div>
+                                        <small class="text-muted" id="feeEstimate">Estimated time: 2-5 minutes</small>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="sendTxBtn" disabled>Send Transaction</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="card dark-card mb-4">
+                    <div class="card-header">
+                        <h5>Recent Transactions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="transaction-list" id="transactionList">
+                            <!-- Transactions will be loaded here -->
+                            <div class="transaction-item">
+                                <div class="d-flex justify-content-between">
+                                    <span class="tx-hash">0x4f8a...3d2f</span>
+                                    <span class="tx-time">2 mins ago</span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <span>1.25 ETH</span>
+                                    <span class="text-success">Completed</span>
+                                </div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="d-flex justify-content-between">
+                                    <span class="tx-hash">0x7b2e...9a1c</span>
+                                    <span class="tx-time">15 mins ago</span>
+                                </div>
+                                <div class="d-flex justify-content-between mt-1">
+                                    <span>500 USDT</span>
+                                    <span class="text-warning">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card dark-card">
+                    <div class="card-header">
+                        <h5>Wallet Balance</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="walletBalance">
+                            <div class="balance-item d-flex justify-content-between">
+                                <span>ETH</span>
+                                <span>0.00</span>
+                            </div>
+                            <div class="balance-item d-flex justify-content-between">
+                                <span>USDT</span>
+                                <span>0.00</span>
+                            </div>
+                            <div class="balance-item d-flex justify-content-between">
+                                <span>BTC</span>
+                                <span>0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
